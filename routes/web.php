@@ -12,13 +12,21 @@ use App\Http\Controllers\BookController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/', function(){
+    return view('home');
+});
 Route::get('/home', function () {
     return view('home');
 });
 Route::controller(BookController::class)->group(function (){
-    Route::get('list', 'show');
-    Route::get('add', 'FormBook');
+    Route::get('/list', 'list');
+    Route::get('/add', 'FormBook');
+    Route::post('/storeBook', 'store');
+    Route::get('/categories', 'categories');
+    Route::get('/authors', 'authors');
+    Route::get('/author/books/{id}', 'list');
+    Route::get('/publishers', 'publishers');
+    Route::get('/publisher/{pub}', 'list');
 });
 Auth::routes();
 

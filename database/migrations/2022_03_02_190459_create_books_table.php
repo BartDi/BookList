@@ -16,8 +16,12 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('title', 100);
-            $table->string('author',100);
+            $table->unsignedBigInteger('author_id');
+            $table->foreign('author_id')->references('id')->on('authors');
+            $table->unsignedBigInteger('publisher_id');
+            $table->foreign('publisher_id')->references('id')->on('publishers');
             $table->text('description');
+            $table->year("publication");
             $table->timestamps();
         });
     }
