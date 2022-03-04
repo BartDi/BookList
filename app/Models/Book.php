@@ -18,7 +18,8 @@ class Book extends Model
         'category_id',
         'author_id',
         'publisher_id',
-        'publication'
+        'publication',
+        'imgUrl'
     ];
 
     // function categories(){

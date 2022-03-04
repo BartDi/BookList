@@ -41,6 +41,13 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('categories') }}">Categories</a>
                         </li>
+                        <li class="nav-item">
+                            <form action='{{url("/search")}}' method="POST">
+                                @csrf                                 
+                                <input type="text" placeholder="search" name="search">
+                                <input type="submit" value="search">
+                            </form>
+                        </li>
                 
                     </ul>
 

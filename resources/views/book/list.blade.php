@@ -7,18 +7,20 @@
 </head>
 <body>
 @include('layouts.app')
-<table>
+<table class="table table-hover">
 <thead>
-    <td><b>Title</b></td>
-    <td><b>Description</b></td>
-    <td><b>Author</b></td>
-    <td><b>Publisher</b></td>
-    <td><b>Category</b></td>
-    <td><b>Publication</b></td>
+    <td scope="col"><b>Image</b></td>
+    <td scope="col"><b>Title</b></td>
+    <td scope="col"><b>Description</b></td>
+    <td scope="col"><b>Author</b></td>
+    <td scope="col"><b>Publisher</b></td>
+    <td scope="col"><b>Category</b></td>
+    <td scope="col"><b>Publication</b></td>
 </thead>
 <tbody>
 @foreach($books as $book)
 <tr>
+    <td><img src="{{$book->imgUrl}}" width="20" height="20"></td>
     <td>{{$book->title}}</td>
     <td>{{$book->description}}</td>
     <td>{{$book->Fname.' '.$book->Lname}}</td>

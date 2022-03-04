@@ -27,6 +27,7 @@ Route::controller(BookController::class)->group(function (){
     Route::get('/author/books/{id}', 'list');
     Route::get('/publishers', 'publishers');
     Route::get('/publisher/{pub}', 'list');
+    Route::post('/search', 'search');
 });
 Auth::routes();
 

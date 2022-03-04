@@ -8,7 +8,7 @@ use App\Models\Publisher;
 use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Support\Facades\DB;  
-
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -43,13 +43,16 @@ class BookController extends Controller
             'publication' => 'required|numeric|min:1800|max:'.date("Y"),
             'categories' => 'required|numeric'
         ]);
+        $path = Storage::putFile('storage', $req->file('file'));
+        dd($path);
         Book::create([
             'title'        => $req->title,
             'author_id'    => $req->authors,
             'category_id'  => $req->categories,
             'publisher_id' => $req->publishers,
             'description'  => $req->description,
-            'publication'  => $req->publication
+            'publication'  => $req->publication,
+            'imgUrl'       => $path
         ]);
         return back();
     }
@@ -58,25 +61,25 @@ class BookController extends Controller
         if($id){
             $books = DB::table('books')
             ->where('books.author_id', '=', $id)
-            ->rightJoin('publishers', 'books.publisher_id', '=','publishers.id')
-            ->rightJoin('authors', 'books.author_id', '=','authors.id')
-            ->rightJoin('categories', 'books.category_id', '=','categories.id')
-            ->select('books.title', 'books.description', 'books.publication', 'publishers.publisher','categories.category', 'authors.Fname', 'authors.Lname')
+            ->join('publishers', 'books.publisher_id', '=','publishers.id')
+            ->join('authors', 'books.author_id', '=','authors.id')
+            ->join('categories', 'books.category_id', '=','categories.id')
+            ->select('books.imgUrl','books.title', 'books.description', 'books.publication', 'publishers.publisher','categories.category', 'authors.Fname', 'authors.Lname')
             ->get();    
         }else if($pub){
             $books = DB::table('books')
             ->where('books.publisher_id', '=', $pub)
-            ->rightJoin('publishers', 'books.publisher_id', '=','publishers.id')
-            ->rightJoin('authors', 'books.author_id', '=','authors.id')
-            ->rightJoin('categories', 'books.category_id', '=','categories.id')
-            ->select('books.title', 'books.description', 'books.publication', 'publishers.publisher','categories.category', 'authors.Fname', 'authors.Lname')
+            ->join('publishers', 'books.publisher_id', '=','publishers.id')
+            ->join('authors', 'books.author_id', '=','authors.id')
+            ->join('categories', 'books.category_id', '=','categories.id')
+            ->select('books.imgUrl', 'books.title', 'books.description', 'books.publication', 'publishers.publisher','categories.category', 'authors.Fname', 'authors.Lname')
             ->get();    
         }else{
             $books = DB::table('books')
-            ->rightJoin('publishers', 'books.publisher_id', '=','publishers.id')
-            ->rightJoin('authors', 'books.author_id', '=','authors.id')
-            ->rightJoin('categories', 'books.category_id', '=','categories.id')
-            ->select('books.title', 'books.description', 'books.publication', 'publishers.publisher','categories.category', 'authors.Fname', 'authors.Lname')
+            ->join('publishers', 'books.publisher_id', '=','publishers.id')
+            ->join('authors', 'books.author_id', '=','authors.id')
+            ->join('categories', 'books.category_id', '=','categories.id')
+            ->select('books.imgUrl','books.title', 'books.description', 'books.publication', 'publishers.publisher','categories.category', 'authors.Fname', 'authors.Lname')
             ->get();
         }
         return view('book.list', ['books'=>$books]);
@@ -93,4 +96,17 @@ class BookController extends Controller
     function publishers(){
         return view('publisher.publishers', ['publishers' => Publisher::all()]);
     }
+    function search(Request $req){
+        $authors = DB::table('authors')
+            ->where('Fname', 'like', '%'.$req->search.'%')
+            ->orWhere('Lname', 'like', '%'.$req->search.'%')
+            ->get();
+        $books = DB::table('books')
+            ->where('title', 'like', '%'.$req->search.'%')
+            ->orWhere('description', 'like', '%'.$req->search.'%')
+            ->get();
+
+        return view('book.list', ['books'=>$books, 'authors'=>$authors]);
+    }
+
 }

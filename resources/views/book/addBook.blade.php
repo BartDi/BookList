@@ -17,7 +17,7 @@
         </ul>
     </div>
 @endif
-    <form action='{{url("/storeBook")}}' method="POST">
+    <form action='{{url("/storeBook")}}' method="POST" enctype="multipart/form-data">
     @csrf
     <select name="categories" id="categories">
         @foreach($categories as $key => $category)
@@ -37,6 +37,7 @@
     <input type="text" name="title" placeholder="title">
     <input type="text" name="description" placeholder="description">
     <input type="number" name="publication" placeholder="2022">
+    <input type="file" name="file" id="file">
     <input type="submit">
     </form>
 </body>
