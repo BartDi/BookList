@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{{ isset($title) ? $title . ' - ' . config('app.name', 'Laravel') : config('app.name', 'Laravel') }}</title>
 </head>
 <body>
 @include('layouts.app')
@@ -37,7 +37,7 @@
     <input type="text" name="title" placeholder="title">
     <input type="text" name="description" placeholder="description">
     <input type="number" name="publication" placeholder="2022">
-    <input type="file" name="file" id="file">
+    <input type="file" name="cover" id="cover">
     <input type="submit">
     </form>
 </body>

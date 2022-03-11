@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
 use App\Models\Publisher;
 use App\Models\Author;
+use Kyslik\ColumnSortable\Sortable;
 
 class Book extends Model
 {
-    use HasFactory;
+    use HasFactory, Sortable;
 
     protected $fillable = [
         'title', 
@@ -22,13 +23,15 @@ class Book extends Model
         'imgUrl'
     ];
 
-    // function categories(){
-    //     return $this->hasMany(Category::class, 'id');
-    // }
-    // function authors(){
-    //     return $this->hasMany(Author::class, 'id');
-    // }
-    // function publishers(){
-    //     return $this->hasMany(Publisher::class, 'id');
-    // }
+    protected $sortable = [
+        'title', 
+        'category_id',
+        'author_id',
+        'publisher_id',
+        'publication',
+    ];
+
+    function author(){
+        return $this->hasOne(Author::class, 'id', 'author_id')->select('Fname', 'Lname');
+    }
 }

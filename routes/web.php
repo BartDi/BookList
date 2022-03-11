@@ -23,11 +23,17 @@ Route::controller(BookController::class)->group(function (){
     Route::get('/add', 'FormBook');
     Route::post('/storeBook', 'store');
     Route::get('/categories', 'categories');
+    Route::get('/category/{cat}', 'list');
     Route::get('/authors', 'authors');
     Route::get('/author/books/{id}', 'list');
     Route::get('/publishers', 'publishers');
     Route::get('/publisher/{pub}', 'list');
     Route::post('/search', 'search');
+    Route::get('author/{id}', 'author');
+    Route::get('product/{id}', 'product');
+    Route::get('add/author', 'FormAuthor');
+    Route::post('/storeAuthor', 'storeAuthor');
+    Route::get('/save/{id}', 'save')->name('save.product');
 });
 Auth::routes();
 

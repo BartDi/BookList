@@ -18,6 +18,17 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <title>{{ isset($title) ? $title . ' - ' . config('app.name', 'Laravel') : config('app.name', 'Laravel') }}</title>
+    <style>
+        #admin, #book, #publisher{
+            height:45px;
+            width:120px;
+            margin-left:20px
+        }
+        #search{
+            margin-left:40%;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -25,31 +36,41 @@
             <div class="container">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="nav justify-content-center">
-                        <li class="nav-item">
-                            <a class="nav-link" href='{{ url("add") }}'>Add</a>
-                        </li>
-                       <li class="nav-item">
-                            <a class="nav-link" href="{{ url('list') }}">List</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('authors') }}">Authors</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('publishers') }}">Publishers</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('categories') }}">Categories</a>
-                        </li>
-                        <li class="nav-item">
-                            <form action='{{url("/search")}}' method="POST">
-                                @csrf                                 
-                                <input type="text" placeholder="search" name="search">
-                                <input type="submit" value="search">
-                            </form>
-                        </li>
-                
-                    </ul>
+                    <div class="btn-group">
+                        <button type="button" id="admin" onmouseover="showAdmin()" onmouseout="hideAmind()" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Admin
+                        </button>
+                        <div class="dropdown-menu hiddenAdmin" onmouseover="showAdmin()" onmouseout="hideAmind()">
+                            <a class="dropdown-item" href='{{url("add")}}'>Add Book</a>
+                            <a class="dropdown-item" href='{{url("add/author")}}'>Add Author</a>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" id="book" onmouseover="showBook()" onmouseout="hideBook()" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Books
+                        </button>
+                        <div class="dropdown-menu hiddenBook" onmouseover="showBook()" onmouseout="hideBook()">
+                            <a class="dropdown-item" href='{{ url("/list") }}'>Book List</a>
+                            <a class="dropdown-item" href='{{ url("/categories") }}'>Category</a>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" id="publisher" onmouseover="showPub()" onmouseout="hidePub()" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Publishers
+                        </button>
+                        <div class="dropdown-menu hiddenPub" onmouseover="showPub()" onmouseout="hidePub()">
+                            <a class="dropdown-item" href='{{ url("/publishers") }}'>Publisher List</a>
+                            <a class="dropdown-item" href='{{ url("/authors") }}'>Authors</a>
+                        </div>
+                    </div>
+
+                    <form action='{{url("/search")}}' id="search" method="POST">
+                        @csrf                                 
+                        <input type="text" placeholder="search" name="search">
+                        <input type="submit" value="search">
+                    </form>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav justify-content-end">
@@ -96,3 +117,48 @@
     </div>
 </body>
 </html>
+<script>
+function showAdmin() {
+    const admin = document.getElementsByClassName('hiddenAdmin');
+    for(let i=0; i<admin.length; i++){
+        admin[i].style.marginTop = "45px";
+        admin[i].style.display = "block";
+    }
+
+}
+function hideAmind(){
+    const admin = document.getElementsByClassName("hiddenAdmin");
+    for(let i=0; i<admin.length; i++){
+        admin[i].style.display = "none";
+    }
+
+}
+
+function showBook() {
+    const admin = document.getElementsByClassName('hiddenBook');
+    for(let i=0; i<admin.length; i++){
+        admin[i].style.marginTop = "45px";
+        admin[i].style.display = "block";
+    }
+}
+function hideBook(){
+    const admin = document.getElementsByClassName("hiddenBook");
+    for(let i=0; i<admin.length; i++){
+        admin[i].style.display = "none";
+    }
+}
+
+function showPub() {
+    const admin = document.getElementsByClassName('hiddenPub');
+    for(let i=0; i<admin.length; i++){
+        admin[i].style.marginTop = "45px";
+        admin[i].style.display = "block";
+    }
+}
+function hidePub(){
+    const admin = document.getElementsByClassName("hiddenPub");
+    for(let i=0; i<admin.length; i++){
+        admin[i].style.display = "none";
+    }
+}
+</script>

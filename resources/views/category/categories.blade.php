@@ -1,12 +1,24 @@
+<head>
+    <style>
+        a{
+            text-decoration: none;  
+        }
+    </style>
+</head>
 @include('layouts.app')
 
-<table>
+<table class="table">
+  <thead>
     <tr>
         <th>@sortablelink('category')</th>
     </tr>
-    @foreach($categories as $key => $category)
-        <tr>
-        <td>{{$category->category}}</td>
-        </tr>
-    @endforeach
+  </thead>
+  <tbody>
+        @foreach($categories as $key => $category)
+            <tr>
+                <td><a href='{{ url("/category/{$category->id}") }}' class="text-dark" title="{{$category->category}} Books">{{$category->category}}</a></td>
+            </tr>
+        @endforeach
+        {{ $categories->links() }}
+    </tbody>
 </table>
