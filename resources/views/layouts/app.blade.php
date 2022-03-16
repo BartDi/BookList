@@ -26,7 +26,7 @@
             margin-left:20px
         }
         #search{
-            margin-left:40%;
+            margin-left:30%;
         }
     </style>
 </head>
@@ -107,6 +107,12 @@
                             </li>
                         @endguest
                     </ul>
+                    <div class="btn-group">
+                        <a href='{{ url("basket") }}'>Basket</a>
+                    </div>
+                    <div class="btn-group" style="margin-left:20px">
+                        <a href='{{ url("library") }}'>Library</a>
+                    </div>
                 </div>
             </div>
         </nav>

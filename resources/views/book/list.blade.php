@@ -32,30 +32,46 @@
 <body>
 @include('layouts.app')
     <div class="container">
+        @if(session()->has('information'))
+            <div class="alert alert-primary" role="alert">
+                {{ session()->get('information') }}
+            </div>
+        @elseif(session()->has('succes'))
+            <div class="alert alert-success" role="alert">
+                {{ session()->get('succes') }}
+            </div>
+        @endif
         @if(isset($books[0]))
             @foreach($books as $book)
-            <div>
-                <div class="productImg">
+            <a href='{{url("product/{$book->id}")}}'><div class="clearfix mx-start">
+                <div class="float-start productImg">
                     <img src="{{asset($book->imgUrl)}}" width="100px" height="150px" alt="">
                 </div>
-                <div class="product">
+                <div class="float-start product">
                     <h3>{{$book->title}}</h3>
                     <a href='{{ url("author/".$book->author_id) }}'><h6>{{$book->Fname.' '.$book->Lname}}</h6></a>
                     <p>{{ substr($book->description,0,200) }}...</p>
                 </div>
                 @if(Auth::user())
-                <div class="shop">
-                    <form action='{{ route("save.product", ["id" => $book->id]) }}' method="GET">
+                <div class="float-start shop">
+                    <form action='{{ url("/save") }}' method="POST">
+                        @csrf
+                        <input type="hidden" name="id" value='{{ $book->id }}'>
+                        @if( $book->amount === 0 )
+                            <h6 style="color:red">Out of stock</h6>
+                        @elseif($book->amount < 10)
+                            <h6 style="color:red">Last units</h6>
+                        @endif
                         <h3>{{$book->price}}$</h3>
-                        <button class="btn btn-primary" type="submit">ADD TO CART</button>
+                        <button class="btn btn-primary" name="action" value="add" type="submit">ADD TO CART</button>
                         <br>
                         <br>
-                        <button class="btn btn-primary" type="submit">SAVE</button>
+                        <button class="btn btn-primary" name="action" value="save" type="submit">SAVE</button>
                     </form>
                 </div>
                 @endif
                 <hr>
-            </div>
+            </div></a>
             @endforeach 
             {{ $books->links('pagination::bootstrap-4') }}
         @else

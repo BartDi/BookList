@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\FeaturesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,18 +23,23 @@ Route::controller(BookController::class)->group(function (){
     Route::get('/list', 'list');
     Route::get('/add', 'FormBook');
     Route::post('/storeBook', 'store');
-    Route::get('/categories', 'categories');
-    Route::get('/category/{cat}', 'list');
-    Route::get('/authors', 'authors');
     Route::get('/author/books/{id}', 'list');
-    Route::get('/publishers', 'publishers');
+    Route::get('/category/{cat}', 'list');
     Route::get('/publisher/{pub}', 'list');
-    Route::post('/search', 'search');
-    Route::get('author/{id}', 'author');
     Route::get('product/{id}', 'product');
     Route::get('add/author', 'FormAuthor');
     Route::post('/storeAuthor', 'storeAuthor');
-    Route::get('/save/{id}', 'save')->name('save.product');
+    Route::post('/save', 'save');
+    Route::get('/basket', 'basket');
+    Route::get('/library', 'library');
+    Route::get('/book/{id}', 'product');
+});
+Route::controller(FeaturesController::class)->group(function (){
+    Route::get('/categories', 'categories');
+    Route::get('/publishers', 'publishers');
+    Route::get('author/{id}', 'author');
+    Route::get('/authors', 'authors');
+    Route::post('/search', 'search');
 });
 Auth::routes();
 

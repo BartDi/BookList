@@ -9,6 +9,7 @@ use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Support\Facades\DB;  
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
@@ -111,24 +112,10 @@ class BookController extends Controller
             ->join('publishers', 'books.publisher_id', '=','publishers.id')
             ->join('authors', 'books.author_id', '=','authors.id')
             ->join('categories', 'books.category_id', '=','categories.id')
-            ->select('books.id','books.author_id','books.price','books.imgUrl','books.title', 'books.description', 'books.publication', 'publishers.publisher','categories.category', 'authors.Fname', 'authors.Lname')
+            ->select('books.amount', 'books.id','books.author_id','books.price','books.imgUrl','books.title', 'books.description', 'books.publication', 'publishers.publisher','categories.category', 'authors.Fname', 'authors.Lname')
             ->paginate(10);
         }
         return view('book.list', ['books' => $books]);
-    }
-
-    function authors(){
-        return view('author.authors', ['authors'=>Author::sortable()->paginate(20)]);
-    }
-
-    function categories(){
-        return view('category.categories', ['categories'=>Category::sortable()->paginate(30)]);
-    }
-
-    function author($id){
-        $author = Author::findOrFail($id);
-        $books = $author->books;
-        return view('author.page', ['author' => $author, 'books' => $books]);
     }
 
     function product($id){
@@ -137,26 +124,70 @@ class BookController extends Controller
         return view('book.page', ['book' => $book, 'author' => $author]);
     }
 
-    function publishers(){
-        return view('publisher.publishers', ['publishers' => Publisher::all()]);
-    }
-    function search(Request $req){
-        $authors = DB::table('authors')
-            ->where('Fname', 'like', '%'.$req->search.'%')
-            ->orWhere('Lname', 'like', '%'.$req->search.'%')
-            ->get();
-        $books = DB::table('books')
-            ->where('title', 'like', '%'.$req->search.'%')
-            ->orWhere('description', 'like', '%'.$req->search.'%')
-            ->get();
-
-        return view('book.list', ['books'=>$books, 'authors'=>$authors]);
-    }
-
-    function save($id)
+    function save(Request $request)
     {
-        session()->push( 'books', Book::findOrFail($id) );  
-        return redirect()->back();
+        switch($request->action){
+            case 'add':
+                $id = $request->id;
+                $book = Book::findOrFail($id);
+                $amount = 1;
+                if($request->session()->has('bookss')){
+                    foreach($request->session()->get('bookss') as $sesBook){
+                        if($sesBook['id']==$id){
+                            return redirect()->back()->with('information','Book was already added');
+                        }
+                    }
+                }
+                    $arrayBook = [
+                        'id' => $book->id,
+                        'title' => $book->title,
+                        'imgUrl' => $book->imgUrl,
+                        'price' => $book->price,
+                        'amount' => $amount
+                    ];
+                    $request->session()->push('bookss', $arrayBook);  
+                
+                return redirect()->back()->with('succes','Book succesfuly added');
+                break;
+            case 'save':
+                $data = DB::table('library')
+                    ->where('book_id', '=', $request->id)
+                    ->where('user_id', '=', Auth::id())->count();
+                if($data>0){
+                    return redirect()->back()->with('information','Book has already saved');
+                }
+                else{    
+                    $query = DB::table('library')->insert([
+                        'book_id' => $request->id,
+                        'user_id' => Auth::id()
+                    ]);
+                    if($query){
+                        return redirect()->back()->with('succes','Book saved');
+                    }
+                    else{
+                        return redirect()->back()->with('information','Something went wrong');
+                    }
+                }
+                break;
+        }
     }
+
+    function basket()
+    {
+        return view('book.basket');
+    }
+
+    function library()
+    {
+        $books = array();
+        $lib = DB::table('library')
+            ->where('user_id', '=', Auth::id())->get();
+        foreach($lib as $book){
+            array_push($books, Book::findOrFail($book->book_id));
+        }
+        return view('book.library', ['books'=>$books]);
+    }
+
+
 
 }

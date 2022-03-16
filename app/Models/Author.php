@@ -27,4 +27,9 @@ class Author extends Model
     function books(){
         return $this->hasMany(Book::class, 'author_id', 'id');
     }
+
+    function booksInfo(){
+        return $this->hasMany(Book::class, 'author_id', 'id')->select('title', 'description', 'imgUrl', 'id');
+    }
+
 }

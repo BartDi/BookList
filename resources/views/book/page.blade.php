@@ -42,7 +42,7 @@
             <div class="product">
                 <h3>{{$book->title}}</h3>
                 <a href='{{ url("author/".$book->author_id) }}'><h6>{{$author->Fname.' '.$author->Lname}}</h6></a>
-                <p>{{ substr($book->description,0,200) }}...</p>
+                <p>{{ $book->description }}</p>
             </div>
             <div class="shop">
                 <h3>{{$book->price}}$</h3>
