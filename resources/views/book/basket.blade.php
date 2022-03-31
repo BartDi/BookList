@@ -16,6 +16,8 @@
                 </div>
                 <div class="float-start product">
                     <h3>{{$book['title']}}</h3>
+                    <h4>{{$book['price']}}$</h4>
+
                 </div>
             </div>
         @endforeach

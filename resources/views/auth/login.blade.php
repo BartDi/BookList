@@ -1,11 +1,14 @@
 @extends('layouts.app')
-
+<head>
+<meta name="google-signin-client_id" content="845915241834-siuir8ot74hnrb85c6jr2g53b824t42j.apps.googleusercontent.com">
+</head>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+                <div class="card-header">{{ __('Login') }}<div class="g-signin2" data-onsuccess="onSignIn"></div></div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">

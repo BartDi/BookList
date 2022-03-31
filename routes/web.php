@@ -3,6 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\FeaturesController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Mail\MailtrapExample;
+use Illuminate\Support\Facades\Mail;
+
+
+ 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,13 +21,13 @@ use App\Http\Controllers\FeaturesController;
 |
 */
 Route::get('/', function(){
-    return view('home');
+    return view('home')->name('home');;
 });
 Route::get('/home', function () {
     return view('home');
 });
 Route::controller(BookController::class)->group(function (){
-    Route::get('/list', 'list');
+    Route::get('/list', 'list')->name('list');
     Route::get('/add', 'FormBook');
     Route::post('/storeBook', 'store');
     Route::get('/author/books/{id}', 'list');
@@ -42,4 +49,7 @@ Route::controller(FeaturesController::class)->group(function (){
     Route::post('/search', 'search');
 });
 Auth::routes();
+Route::get('login/auth/redirect', [App\Http\Controllers\Auth\LoginController::class, 'redirectToProvider']);
+ 
+Route::get('login/auth/callback', [App\Http\Controllers\Auth\LoginController::class, 'handleProviderCallback']);
 

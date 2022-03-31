@@ -126,6 +126,7 @@ class BookController extends Controller
 
     function save(Request $request)
     {
+
         switch($request->action){
             case 'add':
                 $id = $request->id;
@@ -146,7 +147,6 @@ class BookController extends Controller
                         'amount' => $amount
                     ];
                     $request->session()->push('bookss', $arrayBook);  
-                
                 return redirect()->back()->with('succes','Book succesfuly added');
                 break;
             case 'save':
@@ -188,6 +188,16 @@ class BookController extends Controller
         return view('book.library', ['books'=>$books]);
     }
 
+    // function updateAmount(Request $request)
+    // {
+    //     //dd($request->session()->get('bookss'), $request->amount, $request->id);
+    //     foreach($request->session()->get('bookss') as $key => $book){
+    //         if($request->session()->get('bookss')[$key]['id'] == $request->id){
+    //             unset($request->session()->get('bookss')[$key]);
+    //         }
+    //     }
+    //     dd($request->session()->get('bookss'));
+    // }
 
 
 }
