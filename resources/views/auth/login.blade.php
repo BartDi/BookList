@@ -8,7 +8,9 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}<div class="g-signin2" data-onsuccess="onSignIn"></div></div>
+                <div class="card-header">{{ __('Login') }}
+                    <a href='{{ route("login.google") }}'><button>Login with Google</button></a>
+                </div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">

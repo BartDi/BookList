@@ -49,7 +49,7 @@ Route::controller(FeaturesController::class)->group(function (){
     Route::post('/search', 'search');
 });
 Auth::routes();
-Route::get('login/auth/redirect', [App\Http\Controllers\Auth\LoginController::class, 'redirectToProvider']);
+Route::get('login/auth/redirect', [LoginController::class, 'redirectToProvider'])->name('login.google');
  
-Route::get('login/auth/callback', [App\Http\Controllers\Auth\LoginController::class, 'handleProviderCallback']);
+Route::get('login/auth/callback', [LoginController::class, 'handleProviderCallback']);
 

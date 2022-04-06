@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
+use Auth;
 
 class LoginController extends Controller
 {
@@ -41,27 +43,35 @@ class LoginController extends Controller
 
     public function redirectToProvider()
     {
-        return Socialite::driver('google')->stateless()->redirect();
+        return Socialite::driver('google')->redirect();
     }
     public function handleProviderCallback()
     {
-        $user = Socialite::driver('google')->stateless()->user();
-
-        
-        $this->registerOrLogin($user);
-
-        return redirect()->route('home');
-    }
-    protected function registerOrLogin($data)
-    {
-        $user = User::where('email', '=', $data->email)->first();
-
-        if(!$user){
-            $user = new User();
-            $user->name = $data->name;
-            $user->email = $data->email;
-            $user->save();
+        $user = Socialite::driver('google')->user();
+        $localUser = User::where('email', $user->email)->first();
+    
+        if (!$localUser) {
+            $localUser = User::create([
+                'name' => $user->name,
+                'email' => $user->email,
+                'password' => $user->id
+            ]);
         }
-        Auth::login($user);
+    
+        Auth::login($localUser);
+        return redirect('/list');
+
     }
+    // protected function registerOrLogin($data)
+    // {
+    //     $user = User::where('email', '=', $data->email)->first();
+
+    //     if(!$user){
+    //         $user = new User();
+    //         $user->name = $data->name;
+    //         $user->email = $data->email;
+    //         $user->save();
+    //     }
+    //     Auth::login($user);
+    // }
 }
