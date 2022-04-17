@@ -31,6 +31,7 @@
 </head>
 <body>
 @include('layouts.app')
+
     <div class="container">
         @if(session()->has('information'))
             <div class="alert alert-primary" role="alert">
@@ -85,5 +86,9 @@
         @endif
 
     </div>
-    
+
+
+@section('footer')
+
+@endsection
 </body>

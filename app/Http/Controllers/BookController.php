@@ -19,12 +19,14 @@ class BookController extends Controller
     }
 
     //function shows all user's books
-    function show(){
+    function show()
+    {
         return view('list');
     }
 
     //Function which redirects to form
-    function FormBook(){
+    function FormBook()
+    {
         $categories = Category::all()->pluck('category', 'id');
         $authors = Author::select('id', DB::raw("CONCAT(Fname,' ',Lname) AS FullName"))->get()->pluck(('FullName'),'id' );
         $publishers = Publisher::all()->pluck('publisher', 'id');
@@ -34,10 +36,12 @@ class BookController extends Controller
             'publishers'=>$publishers
         ]);
     }
-    function FormAuthor(){
+    function FormAuthor()
+    {
         return view('author.add');
     }
-    function storeAuthor(Request $req){
+    function storeAuthor(Request $req)
+    {
         $validator = $req->validate([
             'Fname' => 'required',
             'description' => 'required',
@@ -57,7 +61,8 @@ class BookController extends Controller
         return back();
     }
     //Function adds book to database, to userBooks table https://dev.to/wanjema/getting-started-with-laravel-and-vue-js-2hc6
-    function store(Request $req){
+    function store(Request $req)
+    {
         $validator = $req->validate([
             'title' => 'required',
             'description' => 'required',
@@ -82,7 +87,8 @@ class BookController extends Controller
         return back();
     }
 
-    function list($id=null, $pub=null, $cat=null){
+    function list($id=null, $pub=null, $cat=null)
+    {
         if($id){
             $books = Book::sortable()
             ->where('books.author_id', '=', $id)
@@ -118,7 +124,8 @@ class BookController extends Controller
         return view('book.list', ['books' => $books]);
     }
 
-    function product($id){
+    function product($id)
+    {
         $book = Book::findOrFail($id);
         $author = $book->author;
         return view('book.page', ['book' => $book, 'author' => $author]);

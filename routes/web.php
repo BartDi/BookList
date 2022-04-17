@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\FeaturesController;
+use App\Http\Controllers\UsersController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Mail\MailtrapExample;
 use Illuminate\Support\Facades\Mail;
@@ -47,6 +48,12 @@ Route::controller(FeaturesController::class)->group(function (){
     Route::get('author/{id}', 'author');
     Route::get('/authors', 'authors');
     Route::post('/search', 'search');
+});
+Route::get('/changeName', function(){
+    return view('changes');
+});
+Route::controller(UsersController::class)->group(function(){
+    Route::post('/userChangeName', 'changeUserName');
 });
 Auth::routes();
 Route::get('login/auth/redirect', [LoginController::class, 'redirectToProvider'])->name('login.google');
